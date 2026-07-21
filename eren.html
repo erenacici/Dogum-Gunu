@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Bir Sürprizim Var! ❤️</title>
+    <style>
+        /* Genel Tasarım Ayarları */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffb3c6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto; /* Fotoğraflar uzadığında sayfanın rahatça kayması için */
+            padding: 40px 0;
+        }
+
+        /* Arka Plandaki Kalpler */
+        .heart-particle {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 20px;
+            pointer-events: none;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Kart Yapısı */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        /* Fotoğraf Sayfası İçin Enine Genişletilmiş Çerçeve */
+        .container.gallery-section {
+            max-width: 1000px; 
+            width: 95%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 1. Şifre Sayfası */
+        .password-section h1 {
+            color: #ff4d6d;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            color: #ff758f;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px; 
+        }
+
+        input[type="password"] {
+            padding: 12px 20px;
+            width: 80%;
+            border: 2px solid #ffb3c6;
+            border-radius: 25px;
+            outline: none;
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff758f;
+        }
+
+        .error-msg {
+            color: #d90429;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 15px;
+            min-height: 22px;
+        }
+
+        /* 2. Mektup Sayfası */
+        .letter-section h1 {
+            color: #ff4d6d;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .letter-text {
+            color: #4a4a4a;
+            line-height: 1.8;
+            font-size: 16px;
+            text-align: left;
+            margin-bottom: 25px;
+            white-space: pre-line;
+        }
+
+        /* 3. Fotoğraf Sayfası */
+        .gallery-section h1 {
+            color: #ff4d6d;
+            margin-bottom: 30px;
+        }
+
+        .gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 35px;
+            padding: 10px;
+            flex-wrap: wrap; 
+        }
+
+        /* Polaroid Efekti */
+        .photo-card {
+            background: white;
+            padding: 15px 15px 30px 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            border: 1px solid #eee;
+            flex: 1;
+            min-width: 260px;
+            max-width: 300px; 
+            transform: rotate(-1.5deg); 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Simetrik Polaroid Eğilimleri */
+        .photo-card:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-card:nth-child(3n) {
+            transform: rotate(-2deg);
+        }
+
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+            z-index: 15;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 250px; /* Fotoğraflar farklı boyutlardaysa hepsini eşitler */
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        .photo-caption {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .love-note {
+            color: #ff4d6d; 
+            font-weight: bold; 
+            font-size: 34px;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+    
+/* FOTOĞRAF BÜYÜTME */
+.image-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:.3s;z-index:9999}
+.image-modal.show{opacity:1;visibility:visible}
+.image-modal img{max-width:75vw;max-height:80vh;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.4)}
+.close-modal{position:absolute;top:30px;right:35px;width:45px;height:45px;border:none;border-radius:50%;font-size:22px;background:#ff4d6d;color:#fff;cursor:pointer}
+
+</style>
+</head>
+<body>
+
+    <audio id="bg-music" src="muzik.mp3" loop></audio>
+
+    <div id="part1" class="container password-section">
+        <h1>❤️ Sadece Sana Özel ❤️</h1>
+        <div class="sub-title">İPUCU = BİZİM TARİHİMİZ</div>
+        
+        <p style="color: #666; margin-bottom: 20px;">Giriş yapmak için şifreyi yazmalısın.</p>
+        
+        <input type="password" id="password-input" placeholder="Bizim için özel bir tarih..." oninput="resetInputStyle()" onkeydown="if(event.key === 'Enter') checkPassword()">
+        <br>
+        <button onclick="checkPassword()">Giriş Yap</button>
+        
+        <div id="error" class="error-msg"></div>
+    </div>
+
+    <div id="part2" class="container letter-section hidden">
+        <h1>İyi Ki Doğdun Sevgilim 🎉</h1>
+        <div class="letter-text">
+            Buraya sevgiline yazmak istediğin o güzel mektubu ekleyeceksin. 
+
+            "Hayatımı güzelleştirdiğin, her anımda yanımda olduğun ve bana dünyadaki en güzel duyguları yaşattığın için teşekkür ederim. Yeni yaşın sana tüm güzellikleri getirsin, hep birlikte nice mutlu yıllara..."
+        </div>
+        <button onclick="goToGallery()">Fotoğraflarımıza Bak ➔</button>
+    </div>
+
+    <div id="part3" class="container gallery-section hidden">
+        <h1>Anılarımız 📸</h1>
+        <div class="gallery">
+            
+            <div class="photo-card">
+                <img src="foto1.jpeg" alt="Anı 1">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto2.jpeg" alt="Anı 2">
+                <div class="photo-caption">Gülüşünü en sevdiğim an.</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto3.jpeg" alt="Anı 3">
+                <div class="photo-caption">Çok Güzelsin.</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto4.jpeg" alt="Anı 4">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto5.jpeg" alt="Anı 5">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto6.jpeg" alt="Anı 6">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto7.jpeg" alt="Anı 7">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto8.jpeg" alt="Anı 8">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto9.jpeg" alt="Anı 9">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto10.jpeg" alt="Anı 10">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto11.jpeg" alt="Anı 11">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto12.jpeg" alt="Anı 12">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="foto13.jpeg" alt="Anı 13">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto14.jpeg" alt="Anı 14">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+            <div class="photo-card">
+                <img src="foto15.jpeg" alt="Anı 15">
+                <div class="photo-caption">En güzel günlerimizden biri...</div>
+            </div>
+
+
+
+
+
+
+
+        </div>
+        <p class="love-note">🫀 Seni Çok Seviyorum SEVGİLİİMMM 🫀</p>
+    </div>
+
+    <script>
+        // Şifren: 29102024
+        const DOGRU_SIFRE = "29102024"; 
+
+        function checkPassword() {
+            const sifreKutusu = document.getElementById("password-input");
+            const girilenSifre = sifreKutusu.value;
+            const errorDiv = document.getElementById("error");
+            const muzik = document.getElementById("bg-music");
+
+            if (girilenSifre === DOGRU_SIFRE) {
+                // Şifre doğruysa hemen mektup sayfasına geç
+                document.getElementById("part1").classList.add("hidden");
+                document.getElementById("part2").classList.remove("hidden");
+                
+                // MÜZİK BURADA, ŞİFRE GİRİLİR GİRİLMEZ BAŞLIYOR 🎵
+                muzik.play().catch(e => {
+                    console.log("Tarayıcı engeli algılandı, sonraki butonda tekrar tetiklenecek: ", e);
+                });
+            } else {
+                errorDiv.innerText = "Yanlış şifre sevgilim, hatırlamamana çok üzüldümmm..! 😢🥺 ";
+                sifreKutusu.style.borderColor = "#d90429";
+                sifreKutusu.style.background = "#fff0f3";
+                sifreKutusu.value = "";
+                sifreKutusu.focus();
+            }
+        }
+
+        // Sevgilin şifreyi tekrar yazmaya başlayınca hata stilini temizler
+        function resetInputStyle() {
+            const sifreKutusu = document.getElementById("password-input");
+            sifreKutusu.style.borderColor = "#ffb3c6";
+            sifreKutusu.style.background = "#fff";
+            document.getElementById("error").innerText = "";
+        }
+
+        function goToGallery() {
+            document.getElementById("part2").classList.add("hidden");
+            document.getElementById("part3").classList.remove("hidden");
+            
+            // Eğer müzik ilk sayfada tarayıcı güvenlik politikalarına takıldıysa, bu tıklamayla kesin olarak başlar
+            const muzik = document.getElementById("bg-music");
+            if (muzik.paused) {
+                muzik.play().catch(e => console.log("Müzik başlatılamadı: ", e));
+            }
+        }
+
+        // Arka Plandaki Uçuşan Kalp Efekti
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart-particle");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 3) + "s"; 
+            heart.style.fontSize = (Math.random() * 15 + 15) + "px"; 
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 400);
+    </script>
+
+<div id="imageModal" class="image-modal">
+<button class="close-modal" onclick="closeImage()">✖</button>
+<img id="modalImage" src="">
+</div>
+
+<script>
+const modal=document.getElementById('imageModal');const modalImage=document.getElementById('modalImage');document.querySelectorAll('.photo-card img').forEach(img=>{img.style.cursor='pointer';img.addEventListener('click',()=>{modalImage.src=img.src;modal.classList.add('show');});});function closeImage(){modal.classList.remove('show');}modal.addEventListener('click',e=>{if(e.target===modal)closeImage();});
+</script>
+</body>
+</html>
